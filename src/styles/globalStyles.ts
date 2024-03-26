@@ -4,6 +4,11 @@ import { colorPalette } from './colorPalette'
 export default css`
   ${colorPalette}
 
+  :root {
+    --dimmed-zIndex: 10;
+    --alert-zIndex: 11;
+  }
+
   html,
   body,
   div,

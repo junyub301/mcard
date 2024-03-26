@@ -17,7 +17,7 @@ export const colors = {
   green: 'var(--green)',
   white: 'var(--white)',
   black: 'var(--black)',
-  grey: 'var(--gray)',
+  grey: 'var(--grey)',
 }
 
 export type Colors = keyof typeof colors
