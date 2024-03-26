@@ -1,41 +1,58 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import React from 'react'
-import logo from './logo.svg'
+import Text from '@shared/Text'
+import Button from '@shared/Button'
 import './App.css'
-
-const bold = css`
-  font-weight: bold;
-`
-
-const containerStyles = css`
-  background-color: pink;
-  ${bold}
-`
-const Button = styled.button`
-  width: 200px;
-  height: 100px;
-  ${bold}
-`
+import Input from '@shared/Input'
+import TextField from './components/shared/TextField'
+import Alert from './components/shared/Alert'
+import { useAlertContext } from './contexts/AlertContext'
 
 function App() {
+  const { open } = useAlertContext()
   return (
-    <div className="App" css={containerStyles}>
-      <Button>스타일 버튼</Button>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Text typography="t1" display="block" color="red">
+        t1
+      </Text>
+      <Text color="blue" typography="t2">
+        t2
+      </Text>
+      <Text typography="t3">t3</Text>
+      <Text typography="t4">t4</Text>
+      <Text typography="t5">t5</Text>
+      <div style={{ height: 10, width: '100%' }} />
+      <Button color="success">클릭해주세요</Button>
+      <Button color="error">클릭해주세요</Button>
+      <Button color="success" weak>
+        클릭해주세요
+      </Button>
+      <Button color="error" weak>
+        클릭해주세요
+      </Button>
+      <Button full>클릭해주세요</Button>
+      <Button disabled full>
+        클릭해주세요
+      </Button>
+
+      <div style={{ height: 10, width: '100%' }} />
+
+      <Input placeholder="로그인" />
+      <Input aria-invalid />
+      <div style={{ height: 10, width: '100%' }} />
+
+      <TextField label="아이디" hasError />
+      <TextField label="패스워드" />
+
+      <Button
+        onClick={() => {
+          open({
+            title: '카드신청완료',
+            description: '내역페이지에서 확인해주세요.',
+            onButtonClick: () => {},
+          })
+        }}
+      >
+        Alert 오픈{' '}
+      </Button>
     </div>
   )
 }
