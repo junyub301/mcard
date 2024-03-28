@@ -7,7 +7,7 @@ import { css } from '@emotion/react'
 import { getCard } from '@remote/card'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
-
+import { motion } from 'framer-motion'
 export default function Card() {
   const { id = '' } = useParams()
   const { data } = useQuery(['card', id], () => getCard(id), {
@@ -24,13 +24,24 @@ export default function Card() {
       <ul>
         {benefit.map((text, index) => {
           return (
-            <ListRow
-              key={text}
-              left={<IconCheck />}
-              contents={
-                <ListRow.Texts title={`혜택 ${index + 1}`} subTitle={text} />
-              }
-            />
+            <motion.li
+              initial={{ opacity: 0, translateX: -90 }}
+              animate={{ opacity: 1, translateX: 0 }}
+              transition={{
+                duration: 0.7,
+                ease: 'easeInOut',
+                delay: index * 0.1,
+              }}
+            >
+              <ListRow
+                as="div"
+                key={text}
+                left={<IconCheck />}
+                contents={
+                  <ListRow.Texts title={`혜택 ${index + 1}`} subTitle={text} />
+                }
+              />
+            </motion.li>
           )
         })}
       </ul>

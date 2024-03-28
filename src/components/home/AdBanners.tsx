@@ -19,8 +19,8 @@ export default function AdBanners() {
             <SwiperSlide key={banner.id}>
               <Link to={banner.link}>
                 <Flex direction="column" css={bannerContainerStyles}>
-                  <Text bold={true}>배너 타이틀</Text>
-                  <Text typography="t7">배너내용</Text>
+                  <Text bold={true}>{banner.title}</Text>
+                  <Text typography="t7">{banner.description}</Text>
                 </Flex>
               </Link>
             </SwiperSlide>
