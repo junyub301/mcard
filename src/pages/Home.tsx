@@ -1,9 +1,6 @@
 import AdBanners from '@/components/home/AdBanners'
 import CardList from '@/components/home/CardList'
-import { getAdBanners } from '@/remote/adBanner'
-import { getCards } from '@remote/card'
 import Top from '@shared/Top'
-import { useEffect } from 'react'
 
 export default function Home() {
   return (
