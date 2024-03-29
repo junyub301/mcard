@@ -4,8 +4,10 @@ import { FormValues } from '@models/signup'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { collection, doc, setDoc } from 'firebase/firestore'
 import { COLLECTIONS } from '@/constants'
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup() {
+  const navigate = useNavigate()
   const handleSubmit = async (formValues: FormValues) => {
     const { email, password, name } = formValues
     const { user } = await createUserWithEmailAndPassword(auth, email, password)
@@ -18,6 +20,7 @@ export default function Signup() {
     }
 
     await setDoc(doc(collection(store, COLLECTIONS.USER), user.uid), newUser)
+    navigate('/')
   }
 
   return (
