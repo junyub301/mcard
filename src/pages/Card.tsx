@@ -25,6 +25,7 @@ export default function Card() {
         {benefit.map((text, index) => {
           return (
             <motion.li
+              key={index}
               initial={{ opacity: 0, translateX: -90 }}
               animate={{ opacity: 1, translateX: 0 }}
               transition={{
