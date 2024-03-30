@@ -7,7 +7,7 @@ import Signin from '@pages/Signin'
 import Signup from '@pages/Signup'
 import Navbar from '@shared/Navbar'
 import PrivateRoute from './components/auth/PrivateRoute'
-import Apply from './pages/Apply'
+import ApplyPage from './pages/Apply'
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
           path="/apply/:id"
           element={
             <PrivateRoute>
-              <Apply />
+              <ApplyPage />
             </PrivateRoute>
           }
         />
