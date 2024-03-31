@@ -1,10 +1,9 @@
-import { auth } from '@remote/firebase'
 import { css } from '@emotion/react'
 import useUser from '@hooks/auth/useUser'
 import { colors } from '@styles/colorPalette'
-import { signOut } from 'firebase/auth'
 import { useCallback } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import MyImage from '../my/MyImage'
 import Button from './Button'
 import Flex from './Flex'
 
@@ -13,13 +12,13 @@ export default function Navbar() {
   const showSignButton = ['/signup', '/signin'].includes(pathname) === false
   const user = useUser()
 
-  const handleLogout = useCallback(() => {
-    signOut(auth)
-  }, [])
-
   const renderButton = useCallback(() => {
     if (user != null) {
-      return <Button onClick={handleLogout}>로그아웃</Button>
+      return (
+        <Link to="/my">
+          <MyImage />
+        </Link>
+      )
     }
     if (showSignButton) {
       return (
@@ -29,7 +28,7 @@ export default function Navbar() {
       )
     }
     return null
-  }, [user, showSignButton, handleLogout])
+  }, [user, showSignButton])
 
   return (
     <Flex justify="space-between" align="center" css={navbarContainerStyles}>
