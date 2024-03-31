@@ -5,6 +5,13 @@ export interface Term {
   title: string
 }
 
+export const APPLY_STATUS = {
+  READY: 'READY',
+  PROGRESS: 'PROGRESS',
+  COMPLETE: 'COMPLETE',
+  REJECT: 'REJECT',
+} as const
+
 export interface ApplyValues {
   userId: User['uid']
   terms: Array<Term['id']>
@@ -16,6 +23,7 @@ export interface ApplyValues {
   isMaster: boolean
   isHipass: boolean
   isRf: boolean
+  status: keyof typeof APPLY_STATUS
 }
 
 export interface Option {
