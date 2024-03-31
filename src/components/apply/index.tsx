@@ -13,46 +13,60 @@ export default function Apply({
 }) {
   const user = useUser()
   const { id } = useParams() as { id: string }
-  const [applyValues, setApplyValues] = useState<Partial<ApplyValues>>({
-    userId: user?.uid,
-    cardId: id,
+  const storageKey = `applied-${user?.uid}-${id}`
+  const [applyValues, setApplyValues] = useState<Partial<ApplyValues>>(() => {
+    const applied = localStorage.getItem(storageKey)
+    if (applied == null) {
+      return {
+        userId: user?.uid,
+        cardId: id,
+        step: 0,
+      }
+    }
+    return JSON.parse(applied)
   })
-  const [step, setStep] = useState<number>(0)
 
   useEffect(() => {
-    if (step === 3) {
+    if (applyValues.step === 3) {
+      localStorage.removeItem(storageKey)
       onSubmit({
         ...applyValues,
         appliedAt: new Date(),
         status: APPLY_STATUS.READY,
       } as ApplyValues)
+    } else {
+      localStorage.setItem(storageKey, JSON.stringify(applyValues))
     }
-  }, [applyValues, step, onSubmit])
+  }, [applyValues, onSubmit, storageKey])
 
   const handleTermsChange = (terms: ApplyValues['terms']) => {
-    setApplyValues((pre) => ({ ...pre, terms }))
-    setStep((pre) => pre + 1)
+    setApplyValues((pre) => ({ ...pre, terms, step: (pre.step as number) + 1 }))
   }
   const handleBasicInfoCHange = (
     infoValues: Pick<ApplyValues, 'salary' | 'creditScore' | 'payDate'>,
   ) => {
-    setApplyValues((pre) => ({ ...pre, ...infoValues }))
-
-    setStep((pre) => pre + 1)
+    setApplyValues((pre) => ({
+      ...pre,
+      ...infoValues,
+      step: (pre.step as number) + 1,
+    }))
   }
 
   const handleCardInfoChange = (
     cardInfoValues: Pick<ApplyValues, 'isHipass' | 'isMaster' | 'isRf'>,
   ) => {
-    setApplyValues((pre) => ({ ...pre, ...cardInfoValues }))
-    setStep((pre) => pre + 1)
+    setApplyValues((pre) => ({
+      ...pre,
+      ...cardInfoValues,
+      step: (pre.step as number) + 1,
+    }))
   }
 
   return (
     <div>
-      {step === 0 && <Terms onNext={handleTermsChange} />}
-      {step === 1 && <BasicInfo onNext={handleBasicInfoCHange} />}
-      {step === 2 && <CardInfo onNext={handleCardInfoChange} />}
+      {applyValues.step === 0 && <Terms onNext={handleTermsChange} />}
+      {applyValues.step === 1 && <BasicInfo onNext={handleBasicInfoCHange} />}
+      {applyValues.step === 2 && <CardInfo onNext={handleCardInfoChange} />}
     </div>
   )
 }

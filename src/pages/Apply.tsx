@@ -1,3 +1,6 @@
+import useAppliedCard from '@/components/apply/hooks/useAppliedCard'
+import FullPageLoader from '@/components/shared/FullPageLoader'
+import { useAlertContext } from '@/contexts/AlertContext'
 import useUser from '@/hooks/auth/useUser'
 import Apply from '@components/apply'
 import useApplyCardMutations from '@components/apply/hooks/useApplyCardMutations'
@@ -11,6 +14,29 @@ export default function ApplyPage() {
   const navigate = useNavigate()
   const user = useUser()
   const { id } = useParams() as { id: string }
+  const { open } = useAlertContext()
+  const { data } = useAppliedCard({
+    userId: user?.uid as string,
+    cardId: id,
+    options: {
+      onSuccess: (applied) => {
+        if (applied === null) return
+        if (applied.status === APPLY_STATUS.COMPLETE) {
+          open({
+            title: '이미 발급이 완료된 카드입니다.',
+            onButtonClick: () => {
+              window.history.back()
+            },
+          })
+          return
+        }
+        setReadyToPll(true)
+      },
+      onError: () => {},
+      suspense: true,
+    },
+  })
+
   const [readyToPoll, setReadyToPll] = useState<boolean>(false)
   usePollApplyStatus({
     onSuccess: async () => {
@@ -44,8 +70,12 @@ export default function ApplyPage() {
     },
   })
 
+  if (data != null && data.status === APPLY_STATUS.COMPLETE) {
+    return null
+  }
+
   if (readyToPoll || isLoading) {
-    return <div>Loading...</div>
+    return <FullPageLoader message="카드를 신청 중입니다." />
   }
 
   return <Apply onSubmit={mutate} />
