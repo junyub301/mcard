@@ -12,9 +12,7 @@ export default function Home() {
         title="혜택 좋은 카드"
         subTitle="회원님을 위해서 혜택 좋은 카드를 모아봤어요"
       />
-      <Button>안녕</Button>
       <AdBanners />
-      <Button>안녕</Button>
       <Suspense
         fallback={[...new Array(10)].map((_, index) => (
           <ListRow.Skeleton key={index} />
@@ -22,7 +20,6 @@ export default function Home() {
       >
         <CardList />
       </Suspense>
-      <Button>안녕</Button>
     </div>
   )
 }
